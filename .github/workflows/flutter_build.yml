@@ -13,19 +13,25 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Download Flutter SDK manually
+    - name: Install Flutter 3.22.1 with Dart 3.8.1
       run: |
-        git clone https://github.com/flutter/flutter.git --branch 3.22.0 --depth 1
-        echo "$GITHUB_WORKSPACE/flutter/bin" >> $GITHUB_PATH
+        git clone https://github.com/flutter/flutter.git --branch 3.22.1 --depth 1
+        echo "$GITHUB_WORKSPACE/flutter/bin" >> $GITHUB_ENV
+        export PATH="$GITHUB_WORKSPACE/flutter/bin:$PATH"
+        flutter --version
 
-    - name: Enable Flutter
-      run: flutter --version
+    - name: Run Flutter doctor
+      run: flutter doctor
 
     - name: Install dependencies
-      run: flutter pub get
+      run: |
+        export PATH="$GITHUB_WORKSPACE/flutter/bin:$PATH"
+        flutter pub get
 
     - name: Build APK
-      run: flutter build apk --release
+      run: |
+        export PATH="$GITHUB_WORKSPACE/flutter/bin:$PATH"
+        flutter build apk --release
 
     - name: Upload APK as artifact
       uses: actions/upload-artifact@v4
