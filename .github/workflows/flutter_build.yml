@@ -10,30 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout source
       uses: actions/checkout@v3
 
-    - name: Install Flutter 3.22.1 with Dart 3.8.1
+    - name: Install Flutter 3.22.1 (Dart 3.8.1)
       run: |
-        git clone https://github.com/flutter/flutter.git --branch 3.22.1 --depth 1
-        echo "$GITHUB_WORKSPACE/flutter/bin" >> $GITHUB_ENV
-        export PATH="$GITHUB_WORKSPACE/flutter/bin:$PATH"
-        flutter --version
+        git clone https://github.com/flutter/flutter.git --branch 3.22.1 --depth 1 flutter_sdk
+        echo "$GITHUB_WORKSPACE/flutter_sdk/bin" >> $GITHUB_PATH
+        flutter_sdk/bin/flutter --version
 
-    - name: Run Flutter doctor
+    - name: Run Flutter Doctor
       run: flutter doctor
 
     - name: Install dependencies
-      run: |
-        export PATH="$GITHUB_WORKSPACE/flutter/bin:$PATH"
-        flutter pub get
+      run: flutter pub get
 
-    - name: Build APK
-      run: |
-        export PATH="$GITHUB_WORKSPACE/flutter/bin:$PATH"
-        flutter build apk --release
+    - name: Build release APK
+      run: flutter build apk --release
 
-    - name: Upload APK as artifact
+    - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
         name: bonas-apk
