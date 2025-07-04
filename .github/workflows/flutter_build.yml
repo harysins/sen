@@ -16,17 +16,16 @@ jobs:
     - name: Install Flutter 3.22.1 (Dart 3.8.1)
       run: |
         git clone https://github.com/flutter/flutter.git --branch 3.22.1 --depth 1 flutter_sdk
-        echo "$GITHUB_WORKSPACE/flutter_sdk/bin" >> $GITHUB_PATH
-        flutter_sdk/bin/flutter --version
+        ./flutter_sdk/bin/flutter --version
 
     - name: Run Flutter Doctor
-      run: flutter doctor
+      run: ./flutter_sdk/bin/flutter doctor
 
     - name: Install dependencies
-      run: flutter pub get
+      run: ./flutter_sdk/bin/flutter pub get
 
     - name: Build release APK
-      run: flutter build apk --release
+      run: ./flutter_sdk/bin/flutter build apk --release
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
