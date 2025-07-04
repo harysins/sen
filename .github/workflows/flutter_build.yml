@@ -10,22 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout source
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-    - name: Install Flutter 3.32.5 (Dart 3.8.1)
-      run: |
-        git clone https://github.com/flutter/flutter.git --branch 3.22.1 --depth 1 flutter_sdk
-        ./flutter_sdk/bin/flutter --version
+    - name: Setup Flutter 3.22.1
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.22.1'
 
-    - name: Run Flutter Doctor
-      run: ./flutter_sdk/bin/flutter doctor
+    - name: Run flutter doctor
+      run: flutter doctor
 
-    - name: Install dependencies
-      run: ./flutter_sdk/bin/flutter pub get
+    - name: Get dependencies
+      run: flutter pub get
 
-    - name: Build release APK
-      run: ./flutter_sdk/bin/flutter build apk --release
+    - name: Build APK
+      run: flutter build apk --release
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
